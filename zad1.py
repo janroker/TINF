@@ -78,7 +78,7 @@ class Code():
         distance = self.distance()
         t = math.floor((distance - 1) / 2)
         nazivnik = 0
-        for i in range(t):
+        for i in range(t + 1):
             nazivnik += scipy.special.binom(n, i)
         if(nazivnik == 0):
             return False
