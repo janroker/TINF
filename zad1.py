@@ -1,8 +1,14 @@
-import math
-import scipy.special
-import fileinput
+from math import log2, floor, factorial
+from fileinput import close
 
 class Code():
+
+    def binomial(self, x, y):
+        try:
+            binom = factorial(x) // factorial(y) // factorial(x - y)
+        except ValueError:
+            binom = 0
+        return binom
 
     def __init__(self, codewords):
         n = len(codewords[0])
@@ -63,7 +69,7 @@ class Code():
 
     def find_or_correct(self):
         distance = self.distance()
-        print("Može otkriti: " + str(distance - 1) + " , a ispraviti: " + str(math.floor((distance - 1) / 2)))
+        print("Može otkriti: " + str(distance - 1) + " , a ispraviti: " + str(floor((distance - 1) / 2)))
         return
 
     def n_k(self):
@@ -72,23 +78,24 @@ class Code():
             return
         length = len(self.codewords)
         n = len(self.codewords[0])
-        print("n = " + str(n) + ", k = " + str(math.log2(length)))
+        print("n = " + str(n) + ", k = " + str(log2(length)))
         return
 
     def perfect(self):
         m = len(self.codewords)
         n = len(self.codewords[0])
         distance = self.distance()
-        t = math.floor((distance - 1) / 2)
+        t = floor((distance - 1) / 2)
         nazivnik = 0
         for i in range(t + 1):
-            nazivnik += scipy.special.binom(n, i)
+            nazivnik += self.binomial(n, i)
         if(nazivnik == 0):
             return False
         if m == (2**n)/nazivnik:
             return True
         else:
             return False
+
 
 file = input("Unesite ime datoteke sa kodnim riječima: ")
 
@@ -113,10 +120,15 @@ try:
         print("Je li zadani kôd linearan?: " + "JE!")
     else:
         print("Je li zadani kôd linearan?: " + "NIJE!")
+    
+    f_obj.close()
 except FileNotFoundError as a:
     msg = "Ne mogu naći datoteku {0}.".format(file)
     print(msg)
 except IOError as a:
+    msg = "IOError - pogrešan put"
+    print(msg)
+except OSError as a:
     msg = "IOError - pogrešan put"
     print(msg)
 except ValueError as a:
