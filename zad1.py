@@ -9,6 +9,9 @@ class Code():
         for a in codewords:
             if n != len(a):
                 raise ValueError("Kod nije blok kod")
+            for b in a:
+                if b != '0' and b != '1':
+                    raise ValueError("kod nije binaran")
         self.codewords = codewords
     
     def isLinear(self):
@@ -60,7 +63,7 @@ class Code():
 
     def find_or_correct(self):
         distance = self.distance()
-        print("Može otkriti: " + str(distance - 1) + " grešaka, a ispraviti: " + str(math.floor((distance - 1) / 2)) + " grešaka")
+        print("Može otkriti: " + str(distance - 1) + " , a ispraviti: " + str(math.floor((distance - 1) / 2)))
         return
 
     def n_k(self):
@@ -89,16 +92,35 @@ class Code():
 
 file = input("Unesite ime datoteke sa kodnim riječima: ")
 
-with open(file) as f_obj:
-    codewords = f_obj.read().splitlines()
+try:
+    with open(file) as f_obj:
+        codewords = f_obj.read().splitlines()
 
-code = Code(codewords)
+    code = Code(codewords)
 
-print("zad1: ")
-code.n_k()
-print("zad2: " + str(code.distance()))
-print("zad3: ")
-code.find_or_correct()
-print("zad4: " + str(code.perfect()))
-print("zad5: " + str(code.isLinear()))
-
+    print("n i k zadanog koda K su: ")
+    code.n_k()
+    print("Udaljenost d(K) koda K je: " + str(code.distance()))
+    print("Sposobnost  koda  da  otkrije  i  ispravi pogrešku: ")
+    code.find_or_correct()
+    perf = code.perfect()
+    if(perf):
+        print("Je li zadani kôd perfektan?: " + "JE!")
+    else:
+        print("Je li zadani kôd perfektan?: " + "NIJE!")
+    lin = code.isLinear()
+    if(lin):
+        print("Je li zadani kôd linearan?: " + "JE!")
+    else:
+        print("Je li zadani kôd linearan?: " + "NIJE!")
+except FileNotFoundError as a:
+    msg = "Ne mogu naći datoteku {0}.".format(file)
+    print(msg)
+except IOError as a:
+    msg = "IOError - pogrešan put"
+    print(msg)
+except ValueError as a:
+    msg = str(a)
+    print(msg)
+finally:
+    input("Pritisnite enter za kraj programa")
