@@ -3,11 +3,15 @@ from fileinput import close
 
 class Code():
 
-    def binomial(self, x, y):
-        try:
-            binom = factorial(x) // factorial(y) // factorial(x - y)
-        except ValueError:
-            binom = 0
+    # Binomial coefficient callculator 
+    def binomial(self, n, k):
+        if k < 0 or k > n:
+            return 0
+        if k == 0 or k == n:
+            return 1
+        binom = 1
+        for i in range(min(k, n - k)):
+            binom = binom * (n - i) // (i + 1)
         return binom
 
     def __init__(self, codewords):
@@ -120,7 +124,6 @@ try:
         print("Je li zadani kôd linearan?: " + "JE!")
     else:
         print("Je li zadani kôd linearan?: " + "NIJE!")
-    
     f_obj.close()
 except FileNotFoundError as a:
     msg = "Ne mogu naći datoteku {0}.".format(file)
