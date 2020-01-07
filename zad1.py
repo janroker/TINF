@@ -3,7 +3,8 @@ from fileinput import close
 
 class Code():
 
-    # Binomial coefficient callculator 
+    # Binomial coefficient callculator
+    #računa binomni koeficijent
     def binomial(self, n, k):
         if k < 0 or k > n:
             return 0
@@ -13,7 +14,13 @@ class Code():
         for i in range(min(k, n - k)):
             binom = binom * (n - i) // (i + 1)
         return binom
-
+    
+    #konstruktor
+    #pri stvaranju klase Code pokreće se konstruktor koji inicijalizira objekt,
+    #konstruktor provjerava je li kod - blok kod te jesu li sve znamenke
+    #binarne, provjeravamo duljinu svake riječi (len(codewords) != len(a))
+    #te svaki bit unutar riječi (b != 0 i 1)
+    
     def __init__(self, codewords):
         n = len(codewords[0])
         for a in codewords:
@@ -23,7 +30,13 @@ class Code():
                 if b != '0' and b != '1':
                     raise ValueError("kod nije binaran")
         self.codewords = codewords
+
     
+    #provjerava linearnost blok koda
+    #prvi uvjet provjerava postoji li nula u blok kodu (zero not in codewords)
+    #drugi uvjet modulo 2 zbraja svaku riječ unutar blok koda te
+    #tvori novu riječ (novi) ukoliko nova riječ nije u blok kodu vraća False
+        
     def isLinear(self):
         n = len(self.codewords[0])
         zero = n*"0"
@@ -43,6 +56,17 @@ class Code():
                     return False
         return True
 
+    
+    #računa udaljenost blok koda
+    #ako je kod lineran, dovoljno je samo prebrojiti broj
+    #jedinica u svakoj riječi izuzev riječi sa svim bitovima u 0 (a != zero)
+    #ako kod nije linearan, u count zbraja broj pozicija u kojima se
+    #kodne riječi razlikuju
+    #u oba slučaja, duljina je minimum nakon prolaska kroz sve riječi
+    #count - udaljenost koda k
+    #lenght - duljina kodne riječi
+    #zero - kodna riječ sa svim bitovima u 0
+    
     def distance(self):
         distance = 100000000
         if self.isLinear():
@@ -70,11 +94,20 @@ class Code():
                     if(count < distance):
                         distance = count
         return distance
+    
 
+    #sposobnost koda da otkrije i ispravi pogrešku
+    #distance - udaljenost koda codewords
+    
     def find_or_correct(self):
         distance = self.distance()
         print("Može otkriti: " + str(distance - 1) + " , a ispraviti: " + str(floor((distance - 1) / 2)))
         return
+    
+
+    #n i k zadanog koda 
+    #n - duljina riječi
+    #k - oznaka dimenzionalnosti potprostora vektorskog prostora V(n) koda codewords
 
     def n_k(self):
         if(not self.isLinear()):
@@ -84,6 +117,14 @@ class Code():
         n = len(self.codewords[0])
         print("n = " + str(n) + ", k = " + str(log2(length)))
         return
+    
+
+    #provjerava perfektnost koda
+    #m - broj kodnih riječi
+    #n - duljina kodne riječi
+    #distance - udaljenost koda codewords
+    #t - radijus kugle (ukoliko je kod perfektan sve riječi su u jednoj od kugli radijusa t)
+    #koristi se formula iz udžbenika referenciranog u uputama na stranici 136
 
     def perfect(self):
         m = len(self.codewords)
@@ -104,9 +145,11 @@ class Code():
 file = input("Unesite ime datoteke sa kodnim riječima: ")
 
 try:
+    #otvaranje tekstualne datoteke sa blok kodom
     with open(file) as f_obj:
         codewords = f_obj.read().splitlines()
 
+    #codewords je varijabla koja sadrži skup svih riječi u blok kodu
     code = Code(codewords)
 
     print("n i k zadanog koda K su: ")
