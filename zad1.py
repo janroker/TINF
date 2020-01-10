@@ -23,12 +23,18 @@ class Code():
     
     def __init__(self, codewords):
         n = len(codewords[0])
+        numCodewords = len(codewords)
         for a in codewords:
             if n != len(a):
                 raise ValueError("Kod nije blok kod")
             for b in a:
                 if b != '0' and b != '1':
                     raise ValueError("kod nije binaran")
+        for i in range(0, numCodewords):
+            for j in range(i + 1, numCodewords):
+                if (codewords[i] == codewords[j]):
+                    raise ValueError("Greška: ista kodna riječ upisana je dva puta.")
+            
         self.codewords = codewords
 
     
@@ -168,16 +174,12 @@ try:
     else:
         print("Je li zadani kôd linearan?: " + "NIJE!")
     f_obj.close()
-except IOError as a:
-    msg = "IOError - pogrešan put"
-    print(msg)
-except OSError as a:
-    msg = "IOError - pogrešan put"
-    print(msg)
 except FileNotFoundError as a:
     msg = "Ne mogu naći datoteku {0}.".format(file)
     print(msg)
-
+except OSError as a:
+    msg = "OSError - pogrešan put"
+    print(msg)
 except ValueError as a:
     msg = str(a)
     print(msg)
