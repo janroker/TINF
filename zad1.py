@@ -146,6 +146,9 @@ try:
     with open(file) as f_obj:
         codewords = f_obj.read().splitlines()
 
+    if(not codewords):
+        raise ValueError("Datoteka je prazna.")
+
     #codewords je varijabla koja sadrži skup svih riječi u blok kodu
     code = Code(codewords)
 
