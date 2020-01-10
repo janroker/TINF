@@ -168,15 +168,16 @@ try:
     else:
         print("Je li zadani kôd linearan?: " + "NIJE!")
     f_obj.close()
-except FileNotFoundError as a:
-    msg = "Ne mogu naći datoteku {0}.".format(file)
-    print(msg)
 except IOError as a:
     msg = "IOError - pogrešan put"
     print(msg)
 except OSError as a:
     msg = "IOError - pogrešan put"
     print(msg)
+except FileNotFoundError as a:
+    msg = "Ne mogu naći datoteku {0}.".format(file)
+    print(msg)
+
 except ValueError as a:
     msg = str(a)
     print(msg)
