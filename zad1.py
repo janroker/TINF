@@ -110,9 +110,6 @@ class Code():
     #k - oznaka dimenzionalnosti potprostora vektorskog prostora V(n) koda codewords
 
     def n_k(self):
-        if(not self.isLinear()):
-            print("Kod nije linearan pa ne možemo govoriti o n,k oznaci")
-            return
         length = len(self.codewords)
         n = len(self.codewords[0])
         print("n = " + str(n) + ", k = " + str(log2(length)))
